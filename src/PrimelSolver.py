@@ -45,9 +45,9 @@ def candidate_primes(admissible_digits: list) -> list:
     """Return a list of all 5-digit primes, from a given list of digits."""
     admissible_digits_repeated = digit_repeater(admissible_digits, 5)
     candidate_set = set(permutations(admissible_digits_repeated, 5))
-    candidate_set = [int_tuple_concatenator(candidate_tuple)
+    candidate_list = [int_tuple_concatenator(candidate_tuple)
                      for candidate_tuple in candidate_set]
-    return sorted([p for p in candidate_set if is_prime(p)])
+    return sorted([p for p in candidate_list if is_prime(p)])
 
 
 def regex_matches(search_list: list, regex: str, match=True) -> list:
@@ -113,7 +113,7 @@ def main():
     print("Which digits are not grey? (Separate digits with a space)")
     digit_input = input()
     digit_set = (map(int, digit_input.split()))
-    candidate_set = candidate_primes(digit_set)
+    candidate_list = candidate_primes(digit_set)
     while True:
         more_input = "Y"
         while more_input == "Y":
@@ -128,7 +128,7 @@ def main():
                     print("You've made an input typo. Please try again:")
                     digit_data = input()
                 (regex, match) = tuple_to_regex(digit_data)
-                candidate_set = regex_matches(candidate_set, regex, match)
+                candidate_list = regex_matches(candidate_list, regex, match)
             print("-"*50)
             print("Do you have more information to include (Y/N)?")
             more_input = input().upper()
@@ -136,7 +136,7 @@ def main():
                 print("You've made a typo - please type Y or N.")
                 more_input = input().upper()
         print("-"*50)
-        print(f"Try: {candidate_set[0]}")
+        print(f"Try: {candidate_list.pop(0)}")
         print("Press enter to keep trying. Otherwise, close this window.")
         input()
 
