@@ -78,7 +78,7 @@ def tuple_to_regex(user_input: str) -> tuple:
     regex_string = ("." * (position - 1)
                     + str(digit)
                     + "." * (5 - position))
-    match = bool(colour == "GREEN")
+    match = bool(colour == "GREEN" or colour == "G")
     return regex_string, match
 
 
@@ -89,7 +89,7 @@ def tuple_validation(tuple_string: str) -> bool:
         return False
     (colour, digit, position) = (tuple_object[0].upper(),
                                  tuple_object[1], tuple_object[2])
-    admissible_colours = ["GREY", "YELLOW", "GREEN"]
+    admissible_colours = ["GREEN", "G", "GREY", "YELLOW", "Y"]
     admissible_digits = ["0", "1", "2", "3", "4",
                          "5", "6", "7", "8", "9"]
     admissible_positions = ["0", "1", "2", "3", "4", "5"]
@@ -115,13 +115,15 @@ def main():
     digit_list = (map(int, digit_input.split()))
     candidate_list = candidate_primes(digit_list)
     while True:
-        more_input = "Y"
-        while more_input == "Y":
+        more_input = True
+        while more_input:
             print("-" * 50)
-            print("Enter data in the form (green/yellow, digit, position):")
-            print("(Press enter to skip this)")
+            print("Enter data in the form (g/green/y/yellow, digit, position), or !!! to finish:")
             digit_data = input()
-            if digit_data == "":
+            if digit_data == "!!!":
+                more_input = False
+            elif digit_data == "":
+                # This is just in case the user accidentally presses return.
                 pass
             else:
                 while not tuple_validation(digit_data):
@@ -129,12 +131,6 @@ def main():
                     digit_data = input()
                 (regex, match) = tuple_to_regex(digit_data)
                 candidate_list = regex_matches(candidate_list, regex, match)
-            print("-" * 50)
-            print("Do you have more information to include (Y/N)?")
-            more_input = input().upper()
-            while more_input not in ("Y", "N"):
-                print("You've made a typo - please type Y or N.")
-                more_input = input().upper()
         print("-" * 50)
         print(f"Try: {candidate_list.pop(0)}")
         print("Press enter to keep trying. Otherwise, close this window.")
