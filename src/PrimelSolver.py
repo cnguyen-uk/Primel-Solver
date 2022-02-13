@@ -17,7 +17,7 @@ def is_prime(n: int) -> bool:
     if not isinstance(n, int) or n < 2:
         return False
     i = 2
-    while i*i <= n:
+    while i * i <= n:
         if not n % i:
             return False
         i += 1
@@ -46,7 +46,7 @@ def candidate_primes(admissible_digits: list) -> list:
     admissible_digits_repeated = digit_repeater(admissible_digits, 5)
     candidate_set = set(permutations(admissible_digits_repeated, 5))
     candidate_list = [int_tuple_concatenator(candidate_tuple)
-                     for candidate_tuple in candidate_set]
+                      for candidate_tuple in candidate_set]
     return sorted([p for p in candidate_list if is_prime(p)])
 
 
@@ -75,11 +75,11 @@ def tuple_to_regex(user_input: str) -> tuple:
     tuple_object = tuple_string_converter(user_input)
     (colour, digit, position) = (tuple_object[0].upper(),
                                  int(tuple_object[1]), int(tuple_object[2]))
-    regex_string = ("."*(position - 1)
+    regex_string = ("." * (position - 1)
                     + str(digit)
-                    + "."*(5 - position))
+                    + "." * (5 - position))
     match = bool(colour == "GREEN")
-    return (regex_string, match)
+    return regex_string, match
 
 
 def tuple_validation(tuple_string: str) -> bool:
@@ -108,16 +108,16 @@ SECOND_GUESS = 50423
 
 def main():
     """Execute the program, with user interaction."""
-    print("-"*50)
+    print("-" * 50)
     print(f"Obtain initial data by trying {FIRST_GUESS} and {SECOND_GUESS}.\n")
     print("Which digits are not grey? (Separate digits with a space)")
     digit_input = input()
-    digit_set = (map(int, digit_input.split()))
-    candidate_list = candidate_primes(digit_set)
+    digit_list = (map(int, digit_input.split()))
+    candidate_list = candidate_primes(digit_list)
     while True:
         more_input = "Y"
         while more_input == "Y":
-            print("-"*50)
+            print("-" * 50)
             print("Enter data in the form (green/yellow, digit, position):")
             print("(Press enter to skip this)")
             digit_data = input()
@@ -129,13 +129,13 @@ def main():
                     digit_data = input()
                 (regex, match) = tuple_to_regex(digit_data)
                 candidate_list = regex_matches(candidate_list, regex, match)
-            print("-"*50)
+            print("-" * 50)
             print("Do you have more information to include (Y/N)?")
             more_input = input().upper()
             while more_input not in ("Y", "N"):
                 print("You've made a typo - please type Y or N.")
                 more_input = input().upper()
-        print("-"*50)
+        print("-" * 50)
         print(f"Try: {candidate_list.pop(0)}")
         print("Press enter to keep trying. Otherwise, close this window.")
         input()
